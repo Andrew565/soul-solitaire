@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hoki Solitaire</title>
+    <link href="./src/index.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <h1>HOKI Solitaire</h1>
+    <p>See <a href="mekmekgames.com">mekmekgames.com</a> for details and instructions as to how to play this game.</p>
+    <section id="gameControls">
+      <button id="newGameButton">Start a new game</button>
+    </section>
+    <section id="enchanterPileSection" class="card-piles">
+      <div id="enchanterPile" class="card-pile">
+        <h2>Enchanter Pile</h2>
+        <div class="pile-cards">Cards go here</div>
+        <button>Deal Cards</button>
+      </div>
+    </section>
+    <section id="cardPiles" class="card-piles">
+      <div id="leftPile" class="card-pile">
+        <h2>Left</h2>
+        <div class="pile-cards">Cards go here</div>
+        <button id="leftDiscard">Discard Top Card</button>
+        <button id="leftShiftToRight">Shift =></button>
+      </div>
+      <div id="middlePile" class="card-pile">
+        <h2>Middle</h2>
+        <div class="pile-cards">Cards go here</div>
+        <button id="middleDiscard">Discard Top Card</button>
+        <div class="dual-buttons">
+        <button id="middleShiftToLeft"><= Shift</button>
+        <button id="middleShiftToRight">Shift =></button>
+        </div>
+      </div>
+      <div id="rightPile" class="card-pile">
+        <h2>Right</h2>
+        <div class="pile-cards">Cards go here</div>
+        <button id="rightDiscard">Discard Top Card</button>
+        <button id="rightShiftToLeft"><= Shift</button>
+      </div>
+    </section>
+    <section id="discardPileSection" class="card-piles">
+      <div id="discardPile" class="card-pile">
+        <h2>Discard Pile</h2>
+        <div class="pile-cards">Cards go here</div>
+      </div>
+    </section>
+
+    <template id="faceUpCardTemplate">
+      <div class="hoki-card hoki-card--face-up">
+        <div class="hoki-card__symbol"></div>
+        <div class="hoki-card__name"></div>
+        <div class="hoki-card__symbol"></div>
+      </div>
+    </template>
+
+    <template id="faceDownCardTemplate">
+      <div class="hoki-card hoki-card--face-down">
+        <div class="hoki-card__back"></div>
+      </div>
+    </template>
+
+    <script src="bundle.js" type="text/javascript"></script>
+  </body>
+</html>

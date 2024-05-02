@@ -1,0 +1,28 @@
+body {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.card-piles {
+  display: flex;
+  flex-direction: row;
+  flex: 3 100%;
+}
+
+.card-pile {
+  flex: 1 100%;
+  padding: 2em;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-pile > * {
+  margin-top: 6px;
+}
+
+.dual-buttons {
+  display: flex;
+}

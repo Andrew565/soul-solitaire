@@ -1,2 +1,2 @@
 # hoki-solitaire
-Hoki Solitaire game in the browser
+Hoki Solitaire game in the browser, based on the Hoki Legacy Solitaire game by Mek Mek Games (mekmekgames.com). No copyright infringement intended, all rights belong to their respective owners.

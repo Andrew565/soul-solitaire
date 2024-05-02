@@ -1,0 +1,28 @@
+{
+  "name": "highcard-browser-demo",
+  "version": "1.0.0",
+  "description": "Demo of using my DeckOfCards.js library to make a high card game",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "rollup -c",
+    "watch": "rollup -c --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Andrew565/HighCard-Browser-Demo.git"
+  },
+  "author": "Andrew Steele",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/Andrew565/HighCard-Browser-Demo/issues"
+  },
+  "homepage": "https://github.com/Andrew565/HighCard-Browser-Demo#readme",
+  "dependencies": {
+    "@andrewscripts/deck-of-cards.js": "^2.0.3",
+    "rollup": "^4.17.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^15.2.3"
+  }
+}
