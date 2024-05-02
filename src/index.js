@@ -56,4 +56,34 @@ document.getElementById("newGameButton")?.addEventListener("click", () => newGam
 
 function renderCards() {
   // for each of the mirage piles, render the cards with the last card on the bottom of the pile
+
+  // Start by rendering a single card
+  const faceUpTemplate = /** @type {HTMLTemplateElement} */ (document.getElementById("faceUpCardTemplate"));
+  const faceDownTemplate = /** @type {HTMLTemplateElement} */ (document.getElementById("faceDownCardTemplate"));
+
+  // Create card
+  const faceUpCard = /** @type {HTMLElement} */ (faceUpTemplate?.content.cloneNode(true));
+  const chosenCard = /** @type {HokiCard} */ (piles.left.cards[0]);
+  faceUpCard.querySelector(".hoki-card")?.classList.add(chosenCard.color);
+  faceUpCard.querySelectorAll(".hoki-card__symbol").forEach((symbolDiv) => {
+    symbolDiv.innerHTML = chosenCard.symbol;
+  });
+  const name = faceUpCard.querySelector(".hoki-card__name");
+  if (name) name.innerHTML = chosenCard.name;
+
+  // Add card to DOM
+  const leftPileEl = document.querySelector("#leftPile .pile-cards");
+  if (leftPileEl) leftPileEl.appendChild(faceUpCard);
+
+  // Create face-down card
+  const faceDownCard = /** @type {HTMLElement} */ (faceDownTemplate?.content.cloneNode(true));
+  const fdCardEl = faceDownCard.querySelector(".hoki-card");
+  if (fdCardEl) fdCardEl.setAttribute("style", "--index: 1");
+  if (leftPileEl) leftPileEl.appendChild(faceDownCard);
+
+  // Create second face-down card
+  const faceDownCard2 = /** @type {HTMLElement} */ (faceDownTemplate?.content.cloneNode(true));
+  const fdCardEl2 = faceDownCard2.querySelector(".hoki-card");
+  if (fdCardEl2) fdCardEl2.setAttribute("style", "--index: 2");
+  if (leftPileEl) leftPileEl.appendChild(faceDownCard2);
 }

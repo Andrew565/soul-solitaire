@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   width: 80%;
   margin: 0 auto;
@@ -23,6 +27,61 @@ body {
   margin-top: 6px;
 }
 
+.pile-cards {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
 .dual-buttons {
   display: flex;
+}
+
+.hoki-card {
+  background-color: white;
+  height: 180px;
+  width: 100px;
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.hoki-card:not(:first-child) {
+  margin-bottom: -160px;
+  margin-left: calc(-5px * var(--index));
+}
+
+.hoki-card--face-down .hoki-card__back {
+  height: 180px;
+  width: 96px;
+  background-color: black;
+  border: 5px solid white;
+  color: white;
+}
+
+.hoki-card.Red {
+  color: red;
+}
+
+.hoki-card.Blue {
+  color: blue
+}
+
+.hoki-card * {
+  width: 100%;
+  flex: 1 100%;
+}
+
+.hoki-card__name {
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.hoki-card__symbol {
+  font-size: large;
+  padding: 0.5em;
 }
