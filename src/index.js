@@ -20,6 +20,7 @@ const piles = {
   left: { cards: [] },
   middle: { cards: [] },
   right: { cards: [] },
+  discard: { cards: hokiDeck.discardPile },
 };
 
 function newGame() {
@@ -42,11 +43,15 @@ function newGame() {
   piles.middle.cards.push(...hokiDeck.drawFromDrawPile(6));
   piles.right.cards.push(...hokiDeck.drawFromDrawPile(6));
   hokiDeck.addToDiscardPile(hokiDeck.drawFromDrawPile(3));
+  // console.log("Discard Pile State at new:", hokiDeck.discardPile);
 
-  // reveal top mirage cards
+  // reveal top mirage cards and discarded cards
   /** @type {HokiCard} */ (piles.left.cards[0]).facingDown = false;
   /** @type {HokiCard} */ (piles.middle.cards[0]).facingDown = false;
   /** @type {HokiCard} */ (piles.right.cards[0]).facingDown = false;
+  hokiDeck.discardPile.forEach((card) => {
+    /** @type {HokiCard} */ (card).facingDown = false;
+  });
 
   // trigger display of cards
   renderCards();
@@ -54,36 +59,61 @@ function newGame() {
 
 document.getElementById("newGameButton")?.addEventListener("click", () => newGame());
 
-function renderCards() {
-  // for each of the mirage piles, render the cards with the last card on the bottom of the pile
+// Get templates for later
+const faceUpTemplate = /** @type {HTMLTemplateElement} */ (document.getElementById("faceUpCardTemplate"));
+const faceDownTemplate = /** @type {HTMLTemplateElement} */ (document.getElementById("faceDownCardTemplate"));
 
-  // Start by rendering a single card
-  const faceUpTemplate = /** @type {HTMLTemplateElement} */ (document.getElementById("faceUpCardTemplate"));
-  const faceDownTemplate = /** @type {HTMLTemplateElement} */ (document.getElementById("faceDownCardTemplate"));
-
-  // Create card
+/**
+ * @param {HokiCard} chosenCard
+ * @param {number} index
+ */
+function makeFaceUpCard(chosenCard, index) {
+  // Clone Template
   const faceUpCard = /** @type {HTMLElement} */ (faceUpTemplate?.content.cloneNode(true));
-  const chosenCard = /** @type {HokiCard} */ (piles.left.cards[0]);
-  faceUpCard.querySelector(".hoki-card")?.classList.add(chosenCard.color);
+
+  // Get main element and add color and index to it
+  const cardEl = faceUpCard.querySelector(".hoki-card");
+  if (cardEl) {
+    cardEl.classList.add(chosenCard.color);
+    cardEl.setAttribute("style", `--index: ${index}`);
+  }
+
+  // Set card's symbol and name
   faceUpCard.querySelectorAll(".hoki-card__symbol").forEach((symbolDiv) => {
     symbolDiv.innerHTML = chosenCard.symbol;
   });
   const name = faceUpCard.querySelector(".hoki-card__name");
   if (name) name.innerHTML = chosenCard.name;
 
-  // Add card to DOM
-  const leftPileEl = document.querySelector("#leftPile .pile-cards");
-  if (leftPileEl) leftPileEl.appendChild(faceUpCard);
+  return /** @type {Node} */ (faceUpCard);
+}
 
-  // Create face-down card
+/** @param {number} index */
+function makeFaceDownCard(index) {
   const faceDownCard = /** @type {HTMLElement} */ (faceDownTemplate?.content.cloneNode(true));
   const fdCardEl = faceDownCard.querySelector(".hoki-card");
-  if (fdCardEl) fdCardEl.setAttribute("style", "--index: 1");
-  if (leftPileEl) leftPileEl.appendChild(faceDownCard);
-
-  // Create second face-down card
-  const faceDownCard2 = /** @type {HTMLElement} */ (faceDownTemplate?.content.cloneNode(true));
-  const fdCardEl2 = faceDownCard2.querySelector(".hoki-card");
-  if (fdCardEl2) fdCardEl2.setAttribute("style", "--index: 2");
-  if (leftPileEl) leftPileEl.appendChild(faceDownCard2);
+  if (fdCardEl) fdCardEl.setAttribute("style", `--index: ${index}`);
+  return faceDownCard;
 }
+
+function renderCards() {
+  // for each of the mirage piles, render the cards with the last card on the bottom of the pile
+  Object.entries(piles).forEach(([pileName, { cards }]) => {
+    // First make all of the cards
+    const cardEls = /** @type {HokiCard[]} */ (cards).map((card, index) => {
+      if (card.facingDown) {
+        return makeFaceDownCard(index);
+      } else {
+        return makeFaceUpCard(card, index);
+      }
+    });
+
+    // Next, append cards to pile
+    const pileEl = document.querySelector(`#${pileName}Pile .pile-cards`);
+    pileEl?.replaceChildren(...cardEls);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  newGame();
+});
