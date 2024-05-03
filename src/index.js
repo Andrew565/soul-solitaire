@@ -1,20 +1,11 @@
 import { DeckOfCards } from "@andrewscripts/deck-of-cards.js";
 import { HokiCards } from "./hokiCards";
 
-/** @typedef {import("@andrewscripts/deck-of-cards.js/dist/DeckOfCards").Card} Card */
 /** @typedef {import("./hokiCards").HokiCard} HokiCard */
-
-function updateElementText(elementId, text) {
-  const el = document.getElementById(elementId);
-  if (el) el.innerText = text;
-}
 
 const hokiDeck = new DeckOfCards(HokiCards);
 
-hokiDeck.shuffle(3);
-const oneThirdOfCards = Math.floor(hokiDeck.drawPile.length / 3);
-
-/** @type {{[x: string]: {cards: Card[]}}} */
+/** @type {{[x: string]: {cards: HokiCard[]}}} */
 const piles = {
   enchanter: { cards: [] },
   left: { cards: [] },
@@ -22,6 +13,10 @@ const piles = {
   right: { cards: [] },
   discard: { cards: hokiDeck.discardPile },
 };
+
+// Get templates for later
+const faceUpTemplate = /** @type {HTMLTemplateElement} */ (document.getElementById("faceUpCardTemplate"));
+const faceDownTemplate = /** @type {HTMLTemplateElement} */ (document.getElementById("faceDownCardTemplate"));
 
 function newGame() {
   // recall cards
@@ -33,7 +28,7 @@ function newGame() {
 
   // flip all face down and then shuffle
   hokiDeck.drawPile.forEach((card) => {
-    /** @type {HokiCard} */ (card).facingDown = true;
+    card.facingDown = true;
   });
   hokiDeck.shuffle(3);
 
@@ -43,7 +38,6 @@ function newGame() {
   piles.middle.cards.push(...hokiDeck.drawFromDrawPile(6));
   piles.right.cards.push(...hokiDeck.drawFromDrawPile(6));
   hokiDeck.addToDiscardPile(hokiDeck.drawFromDrawPile(3));
-  // console.log("Discard Pile State at new:", hokiDeck.discardPile);
 
   // reveal top mirage cards and discarded cards
   /** @type {HokiCard} */ (piles.left.cards[0]).facingDown = false;
@@ -58,10 +52,6 @@ function newGame() {
 }
 
 document.getElementById("newGameButton")?.addEventListener("click", () => newGame());
-
-// Get templates for later
-const faceUpTemplate = /** @type {HTMLTemplateElement} */ (document.getElementById("faceUpCardTemplate"));
-const faceDownTemplate = /** @type {HTMLTemplateElement} */ (document.getElementById("faceDownCardTemplate"));
 
 /**
  * @param {HokiCard} chosenCard
