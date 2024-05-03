@@ -24,22 +24,22 @@
         <h2>Left</h2>
         <div class="pile-cards"></div>
         <button id="leftDiscard">Discard Top Card</button>
-        <button id="leftShiftToRight">Shift =></button>
+        <button data-from-pile="left" data-to-pile="middle" class="shift-button">Shift =></button>
       </div>
       <div id="middlePile" class="card-pile">
         <h2>Middle</h2>
         <div class="pile-cards"></div>
         <button id="middleDiscard">Discard Top Card</button>
         <div class="dual-buttons">
-        <button id="middleShiftToLeft"><= Shift</button>
-        <button id="middleShiftToRight">Shift =></button>
+        <button data-from-pile="middle" data-to-pile="left" class="shift-button"><= Shift</button>
+        <button data-from-pile="middle" data-to-pile="right" class="shift-button">Shift =></button>
         </div>
       </div>
       <div id="rightPile" class="card-pile">
         <h2>Right</h2>
         <div class="pile-cards"></div>
         <button id="rightDiscard">Discard Top Card</button>
-        <button id="rightShiftToLeft"><= Shift</button>
+        <button data-from-pile="right" data-to-pile="middle" class="shift-button"><= Shift</button>
       </div>
     </section>
     <section id="discardPileSection" class="card-piles">

@@ -104,6 +104,63 @@ function renderCards() {
   });
 }
 
+/** @param {string} pileName */
+function discardCard(pileName) {
+  // get top card and discard it
+  const discardedCard = piles[pileName].cards.splice(0, 1);
+  hokiDeck.addToBottomOfDiscardPile(discardedCard);
+
+  // get next top card and reveal it (if there is one)
+  if (piles[pileName].cards.length) piles[pileName].cards[0].facingDown = false;
+
+  // Re-render cards
+  renderCards();
+}
+
+
+/**
+ * @param {string} fromPile
+ * @param {string} toPile
+ */
+function shiftCards(fromPile, toPile) {
+  // get top card from origin pile
+  const topCard = piles[fromPile].cards.shift()
+
+  // if card found, add it to destination pile and reveal next top card
+  if (topCard) {
+    // get next top card and reveal it (if there is one)
+    if (piles[fromPile].cards.length) piles[fromPile].cards[0].facingDown = false;
+
+    piles[toPile].cards.unshift(topCard);
+  }
+
+  // re-render cards
+  renderCards();
+}
+
+// Find all three displayed card piles and set them up for discarding and shifting
+const displayedCardPiles = document.querySelectorAll("#cardPiles .card-pile");
+displayedCardPiles.forEach((pile) => {
+  // get pile name
+  const pileName = pile.id.replace("Pile", "");
+
+  // get and setup discard button
+  const discardButton = pile.querySelector(`button#${pileName}Discard`);
+  if (discardButton) {
+    discardButton.addEventListener("click", () => discardCard(pileName));
+  }
+
+  // get and setup shift button(s)
+  const shiftButtons = pile.querySelectorAll(`button.shift-button`);
+  shiftButtons.forEach((shiftButton) => {
+    // get from pile and destination
+    const { fromPile, toPile } = /** @type {HTMLElement} */ (shiftButton).dataset;
+    if (fromPile && toPile) {
+      shiftButton.addEventListener("click", () => shiftCards(fromPile, toPile))
+    }
+  });
+});
+
 document.addEventListener("DOMContentLoaded", function () {
   newGame();
 });
