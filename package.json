@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/Andrew565/HighCard-Browser-Demo#readme",
   "dependencies": {
-    "@andrewscripts/deck-of-cards.js": "^2.0.3",
+    "@andrewscripts/deck-of-cards.js": "^2.0.4",
     "rollup": "^4.17.0"
   },
   "devDependencies": {
