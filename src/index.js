@@ -161,6 +161,22 @@ displayedCardPiles.forEach((pile) => {
   });
 });
 
+function revealEnchanterCards() {
+  let card = piles.enchanter.cards.shift();
+  card.facingDown = false;
+  piles.left.cards.unshift(card);
+  
+  card = piles.enchanter.cards.shift();
+  card.facingDown = false;
+  piles.middle.cards.unshift(card);
+  
+  card = piles.enchanter.cards.shift();
+  card.facingDown = false;
+  piles.right.cards.unshift(card);
+  
+  renderCards();
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   newGame();
 });
