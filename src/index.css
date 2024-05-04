@@ -6,6 +6,7 @@ body {
   width: 80%;
   margin: 0 auto;
   font-family: sans-serif;
+  background-color: wheat;
 }
 
 .card-piles {
@@ -16,8 +17,7 @@ body {
 
 .card-pile {
   flex: 1 100%;
-  padding: 2em;
-  border: 1px solid black;
+  padding: 1em;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -26,6 +26,10 @@ body {
 
 .card-pile > * {
   margin-top: 6px;
+}
+
+#enchanterPile .pile-cards {
+  height: 210px;
 }
 
 #cardPiles .pile-cards {
