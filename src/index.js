@@ -89,7 +89,19 @@ function makeFaceDownCard(index) {
 function renderCards() {
   // for each of the mirage piles, render the cards with the last card on the bottom of the pile
   Object.entries(piles).forEach(([pileName, { cards }]) => {
-    // First make all of the cards
+    // If the pileName is "discard", sort the cards by group
+    if (pileName === "discard") {
+      cards.sort((a, b) => {
+        if (a.group < b.group) {
+          return -1;
+        } else if (a.group > b.group) {
+          return 1;
+        }
+        return 0;
+      });
+    }
+
+    // Make all of the cards
     const cardEls = /** @type {HokiCard[]} */ (cards).map((card, index) => {
       if (card.facingDown) {
         return makeFaceDownCard(index);
@@ -117,14 +129,13 @@ function discardCard(pileName) {
   renderCards();
 }
 
-
 /**
  * @param {string} fromPile
  * @param {string} toPile
  */
 function shiftCards(fromPile, toPile) {
   // get top card from origin pile
-  const topCard = piles[fromPile].cards.shift()
+  const topCard = piles[fromPile].cards.shift();
 
   // if card found, add it to destination pile and reveal next top card
   if (topCard) {
@@ -156,26 +167,34 @@ displayedCardPiles.forEach((pile) => {
     // get from pile and destination
     const { fromPile, toPile } = /** @type {HTMLElement} */ (shiftButton).dataset;
     if (fromPile && toPile) {
-      shiftButton.addEventListener("click", () => shiftCards(fromPile, toPile))
+      shiftButton.addEventListener("click", () => shiftCards(fromPile, toPile));
     }
   });
 });
 
 function revealEnchanterCards() {
   let card = piles.enchanter.cards.shift();
-  card.facingDown = false;
-  piles.left.cards.unshift(card);
-  
+  if (card) {
+    card.facingDown = false;
+    piles.left.cards.unshift(card);
+  }
+
   card = piles.enchanter.cards.shift();
-  card.facingDown = false;
-  piles.middle.cards.unshift(card);
-  
+  if (card) {
+    card.facingDown = false;
+    piles.middle.cards.unshift(card);
+  }
+
   card = piles.enchanter.cards.shift();
-  card.facingDown = false;
-  piles.right.cards.unshift(card);
-  
+  if (card) {
+    card.facingDown = false;
+    piles.right.cards.unshift(card);
+  }
+
   renderCards();
 }
+
+document.getElementById("enchanterReveal")?.addEventListener("click", () => revealEnchanterCards());
 
 document.addEventListener("DOMContentLoaded", function () {
   newGame();

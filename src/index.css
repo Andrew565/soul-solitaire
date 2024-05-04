@@ -28,6 +28,10 @@ body {
   margin-top: 6px;
 }
 
+#cardPiles .pile-cards {
+  height: 255px;
+}
+
 .pile-cards {
   display: flex;
   flex-direction: column-reverse;
@@ -50,6 +54,7 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  border-radius: 5px;
 }
 
 .hoki-card:not(:first-child) {
@@ -67,7 +72,11 @@ body {
   width: 96px;
   background-color: black;
   border: 5px solid white;
+  border-radius: 5px;
   color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .hoki-card.Red {
