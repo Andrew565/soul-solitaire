@@ -49,7 +49,7 @@ body {
   display: flex;
 }
 
-.hoki-card {
+.soul-card {
   background-color: white;
   height: 180px;
   width: 100px;
@@ -61,17 +61,17 @@ body {
   border-radius: 5px;
 }
 
-.hoki-card:not(:first-child) {
+.soul-card:not(:first-child) {
   margin-bottom: -165px;
   margin-left: calc(-5px * var(--index));
 }
 
-#discardPile .hoki-card:not(:first-child) {
+#discardPile .soul-card:not(:first-child) {
   margin-bottom: 0;
   margin-left: -65px;
 }
 
-.hoki-card--face-down .hoki-card__back {
+.soul-card--face-down .soul-card__back {
   height: 180px;
   width: 96px;
   background-color: black;
@@ -83,20 +83,20 @@ body {
   align-items: center;
 }
 
-.hoki-card.Red {
+.soul-card.Red {
   color: red;
 }
 
-.hoki-card.Blue {
+.soul-card.Blue {
   color: blue
 }
 
-.hoki-card * {
+.soul-card * {
   width: 100%;
   flex: 1;
 }
 
-.hoki-card__name {
+.soul-card__name {
   flex: 4;
   display: flex;
   justify-content: center;
@@ -104,7 +104,7 @@ body {
   text-align: center;
 }
 
-.hoki-card__symbol {
+.soul-card__symbol {
   font-size: 1.5em;
   padding-left: 6px;
 }

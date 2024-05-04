@@ -1,17 +1,17 @@
 import { DeckOfCards } from "@andrewscripts/deck-of-cards.js";
-import { HokiCards } from "./hokiCards";
+import { SoulCards } from "./soulCards";
 
-/** @typedef {import("./hokiCards").HokiCard} HokiCard */
+/** @typedef {import("./soulCards").SoulCard} SoulCard */
 
-const hokiDeck = new DeckOfCards(HokiCards);
+const soulDeck = new DeckOfCards(SoulCards);
 
-/** @type {{[x: string]: {cards: HokiCard[]}}} */
+/** @type {{[x: string]: {cards: SoulCard[]}}} */
 const piles = {
   enchanter: { cards: [] },
   left: { cards: [] },
   middle: { cards: [] },
   right: { cards: [] },
-  discard: { cards: hokiDeck.discardPile },
+  discard: { cards: soulDeck.discardPile },
 };
 
 // Get templates for later
@@ -20,31 +20,31 @@ const faceDownTemplate = /** @type {HTMLTemplateElement} */ (document.getElement
 
 function newGame() {
   // recall cards
-  hokiDeck.addToDrawPile(piles.enchanter.cards.splice(0));
-  hokiDeck.addToDrawPile(piles.left.cards.splice(0));
-  hokiDeck.addToDrawPile(piles.middle.cards.splice(0));
-  hokiDeck.addToDrawPile(piles.right.cards.splice(0));
-  hokiDeck.addToDrawPile(hokiDeck.discardPile.splice(0));
+  soulDeck.addToDrawPile(piles.enchanter.cards.splice(0));
+  soulDeck.addToDrawPile(piles.left.cards.splice(0));
+  soulDeck.addToDrawPile(piles.middle.cards.splice(0));
+  soulDeck.addToDrawPile(piles.right.cards.splice(0));
+  soulDeck.addToDrawPile(soulDeck.discardPile.splice(0));
 
   // flip all face down and then shuffle
-  hokiDeck.drawPile.forEach((card) => {
+  soulDeck.drawPile.forEach((card) => {
     card.facingDown = true;
   });
-  hokiDeck.shuffle(3);
+  soulDeck.shuffle(3);
 
   // deal cards to piles
-  piles.enchanter.cards.push(...hokiDeck.drawFromDrawPile(3));
-  piles.left.cards.push(...hokiDeck.drawFromDrawPile(6));
-  piles.middle.cards.push(...hokiDeck.drawFromDrawPile(6));
-  piles.right.cards.push(...hokiDeck.drawFromDrawPile(6));
-  hokiDeck.addToDiscardPile(hokiDeck.drawFromDrawPile(3));
+  piles.enchanter.cards.push(...soulDeck.drawFromDrawPile(3));
+  piles.left.cards.push(...soulDeck.drawFromDrawPile(6));
+  piles.middle.cards.push(...soulDeck.drawFromDrawPile(6));
+  piles.right.cards.push(...soulDeck.drawFromDrawPile(6));
+  soulDeck.addToDiscardPile(soulDeck.drawFromDrawPile(3));
 
   // reveal top mirage cards and discarded cards
-  /** @type {HokiCard} */ (piles.left.cards[0]).facingDown = false;
-  /** @type {HokiCard} */ (piles.middle.cards[0]).facingDown = false;
-  /** @type {HokiCard} */ (piles.right.cards[0]).facingDown = false;
-  hokiDeck.discardPile.forEach((card) => {
-    /** @type {HokiCard} */ (card).facingDown = false;
+  /** @type {SoulCard} */ (piles.left.cards[0]).facingDown = false;
+  /** @type {SoulCard} */ (piles.middle.cards[0]).facingDown = false;
+  /** @type {SoulCard} */ (piles.right.cards[0]).facingDown = false;
+  soulDeck.discardPile.forEach((card) => {
+    /** @type {SoulCard} */ (card).facingDown = false;
   });
 
   // trigger display of cards
@@ -54,7 +54,7 @@ function newGame() {
 document.getElementById("newGameButton")?.addEventListener("click", () => newGame());
 
 /**
- * @param {HokiCard} chosenCard
+ * @param {SoulCard} chosenCard
  * @param {number} index
  */
 function makeFaceUpCard(chosenCard, index) {
@@ -62,17 +62,17 @@ function makeFaceUpCard(chosenCard, index) {
   const faceUpCard = /** @type {HTMLElement} */ (faceUpTemplate?.content.cloneNode(true));
 
   // Get main element and add color and index to it
-  const cardEl = faceUpCard.querySelector(".hoki-card");
+  const cardEl = faceUpCard.querySelector(".soul-card");
   if (cardEl) {
     cardEl.classList.add(chosenCard.color);
     cardEl.setAttribute("style", `--index: ${index}`);
   }
 
   // Set card's symbol and name
-  faceUpCard.querySelectorAll(".hoki-card__symbol").forEach((symbolDiv) => {
+  faceUpCard.querySelectorAll(".soul-card__symbol").forEach((symbolDiv) => {
     symbolDiv.innerHTML = chosenCard.symbol;
   });
-  const name = faceUpCard.querySelector(".hoki-card__name");
+  const name = faceUpCard.querySelector(".soul-card__name");
   if (name) name.innerHTML = chosenCard.name;
 
   return /** @type {Node} */ (faceUpCard);
@@ -81,7 +81,7 @@ function makeFaceUpCard(chosenCard, index) {
 /** @param {number} index */
 function makeFaceDownCard(index) {
   const faceDownCard = /** @type {HTMLElement} */ (faceDownTemplate?.content.cloneNode(true));
-  const fdCardEl = faceDownCard.querySelector(".hoki-card");
+  const fdCardEl = faceDownCard.querySelector(".soul-card");
   if (fdCardEl) fdCardEl.setAttribute("style", `--index: ${index}`);
   return faceDownCard;
 }
@@ -102,7 +102,7 @@ function renderCards() {
     }
 
     // Make all of the cards
-    const cardEls = /** @type {HokiCard[]} */ (cards).map((card, index) => {
+    const cardEls = /** @type {SoulCard[]} */ (cards).map((card, index) => {
       if (card.facingDown) {
         return makeFaceDownCard(index);
       } else {
@@ -120,7 +120,7 @@ function renderCards() {
 function discardCard(pileName) {
   // get top card and discard it
   const discardedCard = piles[pileName].cards.splice(0, 1);
-  hokiDeck.addToBottomOfDiscardPile(discardedCard);
+  soulDeck.addToBottomOfDiscardPile(discardedCard);
 
   // get next top card and reveal it (if there is one)
   if (piles[pileName].cards.length) piles[pileName].cards[0].facingDown = false;

@@ -1,7 +1,7 @@
 {
-  "name": "highcard-browser-demo",
+  "name": "soul-solitaire",
   "version": "1.0.0",
-  "description": "Demo of using my DeckOfCards.js library to make a high card game",
+  "description": "Soul Solitaire game",
   "main": "src/index.js",
   "scripts": {
     "build": "rollup -c",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Andrew565/HighCard-Browser-Demo.git"
+    "url": "git+https://github.com/Andrew565/soul-solitaire.git"
   },
   "author": "Andrew Steele",
   "license": "Unlicense",
   "bugs": {
-    "url": "https://github.com/Andrew565/HighCard-Browser-Demo/issues"
+    "url": "https://github.com/Andrew565/soul-solitaire/issues"
   },
-  "homepage": "https://github.com/Andrew565/HighCard-Browser-Demo#readme",
+  "homepage": "https://github.com/Andrew565/soul-solitaire#readme",
   "dependencies": {
     "@andrewscripts/deck-of-cards.js": "^2.0.4",
     "rollup": "^4.17.0"

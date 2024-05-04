@@ -1,5 +1,5 @@
 /**
- * @typedef {Object} HokiCard
+ * @typedef {Object} SoulCard
  * @prop {string} name
  * @prop {string} group
  * @prop {string} symbol
@@ -7,8 +7,8 @@
  * @prop {boolean} facingDown
  */
 
-/** @type {HokiCard[]} */
-export const HokiCards = [
+/** @type {SoulCard[]} */
+export const SoulCards = [
   {
     name: "Red Eternity",
     group: "Eternity",
