@@ -33,12 +33,13 @@ body {
 }
 
 #cardPiles .pile-cards {
-  height: 255px;
+  height: 210px;
+  margin-top: 100px;
 }
 
 .pile-cards {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
 }
 
 #discardPile .pile-cards {
@@ -59,16 +60,15 @@ body {
   align-items: center;
   flex-direction: column;
   border-radius: 5px;
-}
-
-.soul-card:not(:first-child) {
-  margin-bottom: -165px;
+  margin-bottom: -200px;
   margin-left: calc(-5px * var(--index));
+  z-index: calc(-1 * var(--index));
 }
 
 #discardPile .soul-card:not(:first-child) {
   margin-bottom: 0;
   margin-left: -65px;
+  z-index: calc(1 * var(--index));
 }
 
 .soul-card--face-down .soul-card__back {
