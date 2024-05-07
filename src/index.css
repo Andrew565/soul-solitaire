@@ -11,7 +11,7 @@
 
 /* Fancy Background */
 html {
-  --s: 100px; /* control the size */
+  --s: 50px; /* control the size */
   --c1: var(--dark-main);
   --c2: var(--blue);
   --c3: var(--red);
