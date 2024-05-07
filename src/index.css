@@ -9,21 +9,71 @@
   box-sizing: border-box;
 }
 
+/* Fancy Background */
+html {
+  --s: 100px; /* control the size */
+  --c1: var(--dark-main);
+  --c2: var(--blue);
+  --c3: var(--red);
+
+
+  --_g: 50%,#0000 37%,var(--c1) 39% 70%,#0000 72%;
+  --_t: 50%,var(--c2) 40deg,var(--c3) 0 140deg,var(--c2) 0 180deg,#0000 0;
+  --_s: 47% 50% at;
+  background:
+    radial-gradient(var(--_s) -10% var(--_g)) 0 calc(var(--s)/2),
+    radial-gradient(var(--_s) -10% var(--_g)) calc(var(--s)/2) 0,
+    radial-gradient(var(--_s) 110% var(--_g)),
+    radial-gradient(var(--_s) 110% var(--_g)) calc(var(--s)/2) calc(var(--s)/2),
+    conic-gradient(from   0deg at 55% var(--_t)) calc(var(--s)/4) 0,
+    conic-gradient(from 180deg at 45% var(--_t)) calc(var(--s)/4) 0,
+    var(--c2);
+  background-size: var(--s) var(--s);
+}
+
 body {
-  width: 80%;
+  width: 50%;
   margin: 0 auto;
   font-family: sans-serif;
   color: var(--dark-main);
+}
 
-  /* Fancy background */
-  background-color: #bababa;
-  opacity: 1;
-  background-image: repeating-radial-gradient( circle at 0 0, transparent 0, #bababa 14px ), repeating-linear-gradient( #140c0A55, #140c0A );
+@media (max-width: 800px) {
+  body {
+    width: 90%;
+  }
 }
 
 h1 {
   color: var(--light-main);
   text-shadow: 0px 0px 2px #140c0A99;
+}
+
+button {
+  background: var(--dark-main);
+  background-image: linear-gradient(to bottom, var(--dark-main), var(--red));
+  border-radius: 25px;
+  box-shadow: 1px 1px 2px var(--dark-main);
+  color: var(--light-main);
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+button:hover {
+  background: var(--red);
+  background-image: linear-gradient(to bottom, var(--red), var(--dark-main));
+  text-decoration: none;
+}
+
+#gameControls {
+  width: 100%;
+  display: flex;
+}
+
+@media (max-width: 800px) {
+  #gameControls {
+    justify-content: space-between;
+  }
 }
 
 .card-piles {
@@ -46,6 +96,7 @@ h1 {
 }
 
 #enchanterPile .pile-cards {
+  margin-top: 20px;
   height: 150px;
 }
 
