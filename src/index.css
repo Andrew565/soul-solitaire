@@ -1,6 +1,8 @@
 :root {
   --light-main: #eee;
   --dark-main: #333;
+  --blue: #007EA7;
+  --red: darkred;
 }
 
 * {
@@ -99,11 +101,11 @@ h1 {
 }
 
 .soul-card.Red {
-  color: darkred;
+  color: var(--red);
 }
 
 .soul-card.Blue {
-  color: darkblue;
+  color: var(--blue);
 }
 
 .soul-card * {
