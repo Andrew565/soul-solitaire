@@ -1,3 +1,8 @@
+:root {
+  --light-main: #eee;
+  --dark-main: #333;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -6,7 +11,17 @@ body {
   width: 80%;
   margin: 0 auto;
   font-family: sans-serif;
-  background-color: wheat;
+  color: var(--dark-main);
+
+  /* Fancy background */
+  background-color: #bababa;
+  opacity: 1;
+  background-image: repeating-radial-gradient( circle at 0 0, transparent 0, #bababa 14px ), repeating-linear-gradient( #140c0A55, #140c0A );
+}
+
+h1 {
+  color: var(--light-main);
+  text-shadow: 0px 0px 2px #140c0A99;
 }
 
 .card-piles {
@@ -29,12 +44,12 @@ body {
 }
 
 #enchanterPile .pile-cards {
-  height: 210px;
+  height: 150px;
 }
 
 #cardPiles .pile-cards {
-  height: 210px;
-  margin-top: 100px;
+  height: 150px;
+  margin-top: 90px;
 }
 
 .pile-cards {
@@ -51,16 +66,16 @@ body {
 }
 
 .soul-card {
-  background-color: white;
-  height: 180px;
+  background-color: var(--light-main);
+  height: 142px;
   width: 100px;
-  border: 1px solid black;
+  box-shadow: 1px 1px 2px #140c0A99;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   border-radius: 5px;
-  margin-bottom: -200px;
+  margin-bottom: -158px;
   margin-left: calc(-5px * var(--index));
   z-index: calc(-1 * var(--index));
 }
@@ -72,23 +87,23 @@ body {
 }
 
 .soul-card--face-down .soul-card__back {
-  height: 180px;
+  height: 142px;
   width: 96px;
-  background-color: black;
-  border: 5px solid white;
+  background-color: var(--dark-main);
+  border: 5px solid var(--light-main);
   border-radius: 5px;
-  color: white;
+  color: var(--light-main);
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .soul-card.Red {
-  color: red;
+  color: darkred;
 }
 
 .soul-card.Blue {
-  color: blue
+  color: darkblue;
 }
 
 .soul-card * {

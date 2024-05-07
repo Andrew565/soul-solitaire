@@ -197,11 +197,16 @@
     discard: { cards: soulDeck.discardPile },
   };
 
+  let CommandManager;
+
   // Get templates for later
   const faceUpTemplate = /** @type {HTMLTemplateElement} */ (document.getElementById("faceUpCardTemplate"));
   const faceDownTemplate = /** @type {HTMLTemplateElement} */ (document.getElementById("faceDownCardTemplate"));
 
   function newGame() {
+    // setup a new command manager for this game
+    CommandManager = createCommandManager();
+
     // recall cards
     soulDeck.addToDrawPile(piles.enchanter.cards.splice(0));
     soulDeck.addToDrawPile(piles.left.cards.splice(0));
@@ -235,6 +240,8 @@
   }
 
   document.getElementById("newGameButton")?.addEventListener("click", () => newGame());
+  document.getElementById("undoButton")?.addEventListener("click", () => CommandManager.undo());
+  document.getElementById("redoButton")?.addEventListener("click", () => CommandManager.redo());
 
   /**
    * @param {SoulCard} chosenCard
@@ -256,7 +263,8 @@
       symbolDiv.innerHTML = chosenCard.symbol;
     });
     const name = faceUpCard.querySelector(".soul-card__name");
-    if (name) name.innerHTML = chosenCard.name;
+    const { color, group } = chosenCard;
+    if (name) name.innerHTML = `${color}<br/>${group}`;
 
     return /** @type {Node} */ (faceUpCard);
   }
@@ -274,6 +282,8 @@
     Object.entries(piles).forEach(([pileName, { cards }]) => {
       // If the pileName is "discard", sort the cards by group
       if (pileName === "discard") {
+        // clone the pile so that we can maintain the undo functionality
+        cards = [...cards];
         cards.sort((a, b) => {
           if (a.group < b.group) {
             return -1;
@@ -297,19 +307,6 @@
       const pileEl = document.querySelector(`#${pileName}Pile .pile-cards`);
       pileEl?.replaceChildren(...cardEls);
     });
-  }
-
-  /** @param {string} pileName */
-  function discardCard(pileName) {
-    // get top card and discard it
-    const discardedCard = piles[pileName].cards.splice(0, 1);
-    soulDeck.addToBottomOfDiscardPile(discardedCard);
-
-    // get next top card and reveal it (if there is one)
-    if (piles[pileName].cards.length) piles[pileName].cards[0].facingDown = false;
-
-    // Re-render cards
-    renderCards();
   }
 
   /**
@@ -341,7 +338,7 @@
     // get and setup discard button
     const discardButton = pile.querySelector(`button#${pileName}Discard`);
     if (discardButton) {
-      discardButton.addEventListener("click", () => discardCard(pileName));
+      discardButton.addEventListener("click", () => CommandManager.doShift(pileName, "discard"));
     }
 
     // get and setup shift button(s)
@@ -350,12 +347,13 @@
       // get from pile and destination
       const { fromPile, toPile } = /** @type {HTMLElement} */ (shiftButton).dataset;
       if (fromPile && toPile) {
-        shiftButton.addEventListener("click", () => shiftCards(fromPile, toPile));
+        shiftButton.addEventListener("click", () => CommandManager.doShift(fromPile, toPile));
       }
     });
   });
 
   function revealEnchanterCards() {
+    // TODO: Re-write this to use the CommandManager
     let card = piles.enchanter.cards.shift();
     if (card) {
       card.facingDown = false;
@@ -378,6 +376,47 @@
   }
 
   document.getElementById("enchanterReveal")?.addEventListener("click", () => revealEnchanterCards());
+
+  // Function to create commandManagers, should be one per game to manage history (undo/redo)
+  const createCommandManager = () => {
+    /** @type {{fromPile: string, toPile: string}[]} */
+    // @ts-ignore
+    let history = [null];
+    let position = 0;
+
+    return {
+      /**
+       * @param {string} fromPile
+       * @param {string} toPile
+       */
+      doShift(fromPile, toPile) {
+        // If current position is anywhere other than the end of the history array, keep only the past history
+        if (position < history.length - 1) {
+          history = history.slice(0, position + 1);
+        }
+
+        history.push({ fromPile, toPile });
+        position += 1;
+        shiftCards(fromPile, toPile);
+      },
+
+      undo() {
+        if (position > 0) {
+          const { fromPile, toPile } = history[position];
+          position -= 1;
+          shiftCards(toPile, fromPile);
+        }
+      },
+
+      redo() {
+        if (position < history.length - 1) {
+          position += 1;
+          const { fromPile, toPile } = history[position];
+          shiftCards(fromPile, toPile);
+        }
+      },
+    };
+  };
 
   document.addEventListener("DOMContentLoaded", function () {
     newGame();
