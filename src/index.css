@@ -41,10 +41,16 @@ body {
 @media (max-width: 800px) {
   body {
     width: 90%;
+    overflow: hidden;
+  }
+
+  .gu-mirror {
+    display: none !important;
   }
 }
 
 h1 {
+  margin: 0;
   color: var(--light-main);
   text-shadow: 0px 0px 2px #140c0A99;
 }
@@ -79,30 +85,56 @@ button:hover {
 .card-piles {
   display: flex;
   flex-direction: row;
-  flex: 3 100%;
+  flex: 3;
 }
 
 .card-pile {
   flex: 1 100%;
-  padding: 1em;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.card-pile > * {
-  margin-top: 6px;
+#enchanterPile.pile-cards {
+  margin-top: 40px;
+  height: 150px;
 }
 
-#enchanterPile.pile-cards {
-  margin-top: 20px;
-  height: 150px;
+@media (max-width: 800px) {
+  #enchanterPile.pile-cards {
+    display: none;
+  }
+
+  #cardsAndDiscards {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  #cardPiles {
+    flex: 2 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  #discardPile {
+    flex: 1 100%;
+  }
 }
 
 #cardPiles .pile-cards {
-  height: 150px;
+  height: 142px;
   margin-top: 90px;
+}
+
+@media (max-width: 800px) {
+  #cardPiles .pile-cards {
+    margin-top: 0px;
+    margin-bottom: 10px;
+    height: 142px;
+  }
 }
 
 .pile-cards {
@@ -111,7 +143,17 @@ button:hover {
 }
 
 #discardPile.pile-cards {
+  margin-top: 10px;
   flex-direction: row;
+}
+
+@media (max-width: 800px) {
+  #discardPile.pile-cards {
+    margin-top: 0px;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 50vh;
+  }
 }
 
 .dual-buttons {
@@ -133,10 +175,31 @@ button:hover {
   z-index: calc(-1 * var(--index));
 }
 
+@media (max-width: 800px) {
+  .soul-card {
+    margin-bottom: -142px;
+    margin-left: calc(-10px * var(--index));
+  }
+}
+
+#discardPile .soul-card {
+  z-index: calc(2 * var(--index));
+}
+
 #discardPile .soul-card:not(:first-child) {
   margin-bottom: 0;
-  margin-left: -65px;
-  z-index: calc(1 * var(--index));
+  margin-left: -70px;
+}
+
+@media (max-width: 800px) {
+  #discardPile .soul-card {
+    margin-left: 0;
+    margin-bottom: 0;
+  }
+  #discardPile .soul-card:not(:first-child) {
+    margin-left: 0;
+    margin-top: -120px;
+  }
 }
 
 .soul-card--face-down .soul-card__back {
