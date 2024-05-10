@@ -1307,8 +1307,10 @@
   const pileCardsEls = Array.from(document.getElementsByClassName("pile-cards"));
   console.log("pileCardsEls:", pileCardsEls);
   const drake = dragula$1(pileCardsEls);
-  drake.on("drop", (el, target, source) => {
-    console.log("el, target, source", el, target, source);
+  drake.on("drop", (_, target, source) => {
+    const fromPile = source.id.replace("Pile", "");
+    const toPile = target.id.replace("Pile", "");
+    CommandManager.doShift(fromPile, toPile);
   });
 
 
