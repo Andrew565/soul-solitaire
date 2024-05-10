@@ -20,9 +20,11 @@
   "homepage": "https://github.com/Andrew565/soul-solitaire#readme",
   "dependencies": {
     "@andrewscripts/deck-of-cards.js": "^2.0.4",
+    "dragula": "^3.7.3",
     "rollup": "^4.17.0"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3"
   }
 }
