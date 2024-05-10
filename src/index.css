@@ -95,7 +95,7 @@ button:hover {
   margin-top: 6px;
 }
 
-#enchanterPile .pile-cards {
+#enchanterPile.pile-cards {
   margin-top: 20px;
   height: 150px;
 }
@@ -110,7 +110,7 @@ button:hover {
   flex-direction: column;
 }
 
-#discardPile .pile-cards {
+#discardPile.pile-cards {
   flex-direction: row;
 }
 

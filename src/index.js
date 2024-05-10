@@ -1,5 +1,6 @@
 import { DeckOfCards } from "@andrewscripts/deck-of-cards.js";
 import { SoulCards } from "./soulCards";
+import dragula from "dragula";
 
 /** @typedef {import("./soulCards").SoulCard} SoulCard */
 
@@ -121,7 +122,7 @@ function renderCards() {
     });
 
     // Next, append cards to pile
-    const pileEl = document.querySelector(`#${pileName}Pile .pile-cards`);
+    const pileEl = document.querySelector(`#${pileName}Pile.pile-cards`);
     pileEl?.replaceChildren(...cardEls);
   });
 }
@@ -234,6 +235,15 @@ const createCommandManager = () => {
     },
   };
 };
+
+/** Drag and drop stuff */
+const pileCardsEls = Array.from(document.getElementsByClassName("pile-cards"));
+console.log("pileCardsEls:", pileCardsEls);
+const drake = dragula(pileCardsEls);
+drake.on("drop", (el, target, source) => {
+  console.log("el, target, source", el, target, source);
+});
+
 
 document.addEventListener("DOMContentLoaded", function () {
   newGame();
