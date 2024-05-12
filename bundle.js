@@ -1087,6 +1087,7 @@
   // Get templates for later
   const faceUpTemplate = /** @type {HTMLTemplateElement} */ (document.getElementById("faceUpCardTemplate"));
   const faceDownTemplate = /** @type {HTMLTemplateElement} */ (document.getElementById("faceDownCardTemplate"));
+  const emptyTemplate = /** @type {HTMLTemplateElement} */ (document.getElementById("emptyCardTemplate"));
 
   function newGame() {
     // setup a new command manager for this game
@@ -1162,6 +1163,14 @@
     return faceDownCard;
   }
 
+  /** @param {number} index */
+  function makeEmptyCard(index) {
+    const emptyCard = /** @type {HTMLElement} */ (emptyTemplate?.content.cloneNode(true));
+    const emptyCardEl = emptyCard.querySelector(".soul-card");
+    if (emptyCardEl) emptyCardEl.setAttribute("style", `--index: ${index}`);
+    return emptyCard;
+  }
+
   function renderCards() {
     // for each of the mirage piles, render the cards with the last card on the bottom of the pile
     Object.entries(piles).forEach(([pileName, { cards }]) => {
@@ -1187,6 +1196,10 @@
           return makeFaceUpCard(card, index);
         }
       });
+      
+      const nextIndex = cardEls.length;
+      const emptyCard = makeEmptyCard(nextIndex);
+      cardEls.push(emptyCard);
 
       // Next, append cards to pile
       const pileEl = document.querySelector(`#${pileName}Pile.pile-cards`);
