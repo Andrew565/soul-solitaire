@@ -43,10 +43,10 @@ body {
     width: 90%;
     overflow: hidden;
   }
+}
 
-  .gu-mirror {
-    display: none !important;
-  }
+.gu-mirror {
+  display: none !important;
 }
 
 h1 {
