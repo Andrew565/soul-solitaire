@@ -182,6 +182,10 @@ button:hover {
   }
 }
 
+.soul-card--empty:not(:only-child) {
+  display: none;
+}
+
 #discardPile .soul-card {
   z-index: calc(2 * var(--index));
 }
