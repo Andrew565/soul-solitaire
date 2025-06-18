@@ -1,7 +1,7 @@
 :root {
   --light-main: #eee;
   --dark-main: #333;
-  --blue: #007EA7;
+  --blue: #007ea7;
   --red: darkred;
 }
 
@@ -9,39 +9,17 @@
   box-sizing: border-box;
 }
 
-/* Fancy Background */
-html {
-  --s: 50px; /* control the size */
-  --c1: var(--dark-main);
-  --c2: var(--blue);
-  --c3: var(--red);
-
-
-  --_g: 50%,#0000 37%,var(--c1) 39% 70%,#0000 72%;
-  --_t: 50%,var(--c2) 40deg,var(--c3) 0 140deg,var(--c2) 0 180deg,#0000 0;
-  --_s: 47% 50% at;
-  background:
-    radial-gradient(var(--_s) -10% var(--_g)) 0 calc(var(--s)/2),
-    radial-gradient(var(--_s) -10% var(--_g)) calc(var(--s)/2) 0,
-    radial-gradient(var(--_s) 110% var(--_g)),
-    radial-gradient(var(--_s) 110% var(--_g)) calc(var(--s)/2) calc(var(--s)/2),
-    conic-gradient(from   0deg at 55% var(--_t)) calc(var(--s)/4) 0,
-    conic-gradient(from 180deg at 45% var(--_t)) calc(var(--s)/4) 0,
-    var(--c2);
-  background-size: var(--s) var(--s);
-}
-
 body {
   width: 50%;
   margin: 0 auto;
   font-family: sans-serif;
   color: var(--dark-main);
+  background-color: #111;
 }
 
 @media (max-width: 800px) {
   body {
     width: 90%;
-    overflow: hidden;
   }
 }
 
@@ -52,7 +30,7 @@ body {
 h1 {
   margin: 0;
   color: var(--light-main);
-  text-shadow: 0px 0px 2px #140c0A99;
+  text-shadow: 0px 0px 2px #140c0a99;
 }
 
 button {
@@ -164,7 +142,7 @@ button:hover {
   background-color: var(--light-main);
   height: 142px;
   width: 100px;
-  box-shadow: 2px 2px 4px #140c0ABB;
+  box-shadow: 2px 2px 4px #140c0abb;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -172,6 +150,7 @@ button:hover {
   border-radius: 5px;
   margin-bottom: -158px;
   margin-left: calc(-5px * var(--index));
+  cursor: pointer;
   z-index: calc(-1 * var(--index));
 }
 

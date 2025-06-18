@@ -1,6 +1,5 @@
 import { DeckOfCards } from "@andrewscripts/deck-of-cards.js";
 import { SoulCards } from "./soulCards";
-import dragula from "dragula";
 
 /** @typedef {import("./soulCards").SoulCard} SoulCard */
 
@@ -129,10 +128,22 @@ function renderCards() {
         return makeFaceUpCard(card, index);
       }
     });
-    
+
     const nextIndex = cardEls.length;
     const emptyCard = makeEmptyCard(nextIndex);
     cardEls.push(emptyCard);
+
+    // Add click listener for click-to-move
+    if (pileName !== "discard" && cards.length > 0) {
+      const topCardData = cards[0];
+      if (!topCardData.facingDown) {
+        // cardEls are DocumentFragments, so we need to query inside them differently
+        const topCardEl = /** @type {HTMLElement} */ (cardEls[0]).querySelector(".soul-card");
+        if (topCardEl) {
+          topCardEl.addEventListener("click", () => CommandManager.doShift(pileName, "discard"));
+        }
+      }
+    }
 
     // Next, append cards to pile
     const pileEl = document.querySelector(`#${pileName}Pile.pile-cards`);
@@ -248,17 +259,6 @@ const createCommandManager = () => {
     },
   };
 };
-
-/** Drag and drop stuff */
-const pileCardsEls = Array.from(document.getElementsByClassName("pile-cards"));
-console.log("pileCardsEls:", pileCardsEls);
-const drake = dragula(pileCardsEls);
-drake.on("drop", (_, target, source) => {
-  const fromPile = source.id.replace("Pile", "");
-  const toPile = target.id.replace("Pile", "");
-  CommandManager.doShift(fromPile, toPile);
-});
-
 
 document.addEventListener("DOMContentLoaded", function () {
   newGame();
