@@ -24,12 +24,18 @@
       <section id="cardPiles" class="card-piles">
         <div class="card-pile">
           <div id="leftPile" class="pile-cards"></div>
+          <button class="shift-button" data-fromPile="left" data-toPile="middle">➡️</button>
         </div>
         <div class="card-pile">
           <div id="middlePile" class="pile-cards"></div>
+          <div class="shift-buttons">
+            <button class="shift-button" data-fromPile="middle" data-toPile="left">⬅️</button>
+            <button class="shift-button" data-fromPile="middle" data-toPile="right">➡️</button>
+          </div>
         </div>
         <div class="card-pile">
           <div id="rightPile" class="pile-cards"></div>
+          <button class="shift-button" data-fromPile="right" data-toPile="middle">⬅️</button>
         </div>
       </section>
       <section id="discardPileSection" class="card-piles">
@@ -51,7 +57,7 @@
         <div class="soul-card__back">Soul</div>
       </div>
     </template>
-    
+
     <template id="emptyCardTemplate">
       <div class="soul-card soul-card--empty">
         <div class="soul-card__placeholder">Empty Pile</div>

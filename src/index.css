@@ -49,6 +49,12 @@ button:hover {
   text-decoration: none;
 }
 
+@media (max-width: 800px) {
+  button.shift-button {
+    transform: rotate(90deg);
+  }
+}
+
 #gameControls {
   width: 100%;
   display: flex;
@@ -92,6 +98,17 @@ button:hover {
 
   #cardPiles {
     flex: 2 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  #cardPiles .card-pile {
+    flex-direction: row;
+  }
+
+  .card-pile .shift-buttons {
+    height: 80%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

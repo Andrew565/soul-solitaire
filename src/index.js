@@ -110,23 +110,12 @@ function renderCards() {
     if (pileName === "discard") {
       // clone the pile so that we can maintain the undo functionality
       cards = [...cards];
-      cards.sort((a, b) => {
-        if (a.group < b.group) {
-          return -1;
-        } else if (a.group > b.group) {
-          return 1;
-        }
-        return 0;
-      });
+      cards.sort(sortDiscardPile);
     }
 
     // Make all of the cards
     const cardEls = /** @type {SoulCard[]} */ (cards).map((card, index) => {
-      if (card.facingDown) {
-        return makeFaceDownCard(index);
-      } else {
-        return makeFaceUpCard(card, index);
-      }
+      return (card.facingDown) ? makeFaceDownCard(index) : makeFaceUpCard(card, index);
     });
 
     const nextIndex = cardEls.length;
@@ -151,6 +140,16 @@ function renderCards() {
   });
 }
 
+function sortDiscardPile(a, b) {
+  if (a.group < b.group) {
+    return -1;
+  } else if (a.group > b.group) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
 /**
  * @param {string} fromPile
  * @param {string} toPile
@@ -161,6 +160,8 @@ function shiftCards(fromPile, toPile) {
 
   // if card found, add it to destination pile and reveal next top card
   if (topCard) {
+    topCard.facingDown = false; // reveal the card
+
     // get next top card and reveal it (if there is one)
     if (piles[fromPile].cards.length) piles[fromPile].cards[0].facingDown = false;
 
@@ -186,35 +187,19 @@ displayedCardPiles.forEach((pile) => {
   // get and setup shift button(s)
   const shiftButtons = pile.querySelectorAll(`button.shift-button`);
   shiftButtons.forEach((shiftButton) => {
-    // get from pile and destination
-    const { fromPile, toPile } = /** @type {HTMLElement} */ (shiftButton).dataset;
-    if (fromPile && toPile) {
-      shiftButton.addEventListener("click", () => CommandManager.doShift(fromPile, toPile));
+    // get from pile and destination (have to be lowercase)
+    const { frompile, topile } = /** @type {HTMLElement} */ (shiftButton).dataset;
+    if (frompile && topile) {
+      shiftButton.addEventListener("click", () => CommandManager.doShift(frompile, topile));
     }
   });
 });
 
 function revealEnchanterCards() {
-  // TODO: Re-write this to use the CommandManager
-  let card = piles.enchanter.cards.shift();
-  if (card) {
-    card.facingDown = false;
-    piles.left.cards.unshift(card);
-  }
-
-  card = piles.enchanter.cards.shift();
-  if (card) {
-    card.facingDown = false;
-    piles.middle.cards.unshift(card);
-  }
-
-  card = piles.enchanter.cards.shift();
-  if (card) {
-    card.facingDown = false;
-    piles.right.cards.unshift(card);
-  }
-
-  renderCards();
+  // Use CommandManager.doShift to move cards from enchanter to left, middle, and right
+  CommandManager.doShift("enchanter", "left");
+  CommandManager.doShift("enchanter", "middle");
+  CommandManager.doShift("enchanter", "right");
 }
 
 document.getElementById("enchanterReveal")?.addEventListener("click", () => revealEnchanterCards());
