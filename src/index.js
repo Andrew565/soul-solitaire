@@ -158,6 +158,7 @@ function sortDiscardPile(a, b) {
 
 // Utility: Save state to localStorage
 function saveGameState() {
+  // Uses .map() to create copies of the cards to avoid direct references
   const state = {
     piles: Object.fromEntries(
       Object.entries(piles).map(([name, { cards }]) => [
@@ -194,6 +195,9 @@ function loadGameState() {
     soulDeck.discardPile.length = 0;
     soulDeck.discardPile.push(...state.deck.discardPile);
 
+    // setup a new command manager for this game
+    CommandManager = createCommandManager();
+
     renderCards();
     return true; // Successfully loaded state
   } catch {
@@ -226,27 +230,14 @@ function shiftCards(fromPile, toPile) {
   saveGameState();
 }
 
-// Find all three displayed card piles and set them up for discarding and shifting
-const displayedCardPiles = document.querySelectorAll("#cardPiles .card-pile");
-displayedCardPiles.forEach((pile) => {
-  // get pile name
-  const pileName = pile.id.replace("Pile", "");
-
-  // get and setup discard button
-  const discardButton = pile.querySelector(`button#${pileName}Discard`);
-  if (discardButton) {
-    discardButton.addEventListener("click", () => CommandManager.doShift(pileName, "discard"));
+// get and setup shift button(s)
+const shiftButtons = document.querySelectorAll(`button.shift-button`);
+shiftButtons.forEach((shiftButton) => {
+  // get from pile and destination (have to be lowercase)
+  const { frompile: fromPile, topile: toPile } = /** @type {HTMLElement} */ (shiftButton).dataset;
+  if (fromPile && toPile) {
+    shiftButton.addEventListener("click", () => CommandManager.doShift(fromPile, toPile));
   }
-
-  // get and setup shift button(s)
-  const shiftButtons = pile.querySelectorAll(`button.shift-button`);
-  shiftButtons.forEach((shiftButton) => {
-    // get from pile and destination (have to be lowercase)
-    const { frompile, topile } = /** @type {HTMLElement} */ (shiftButton).dataset;
-    if (frompile && topile) {
-      shiftButton.addEventListener("click", () => CommandManager.doShift(frompile, topile));
-    }
-  });
 });
 
 function revealEnchanterCards() {
