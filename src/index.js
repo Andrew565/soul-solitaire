@@ -22,14 +22,17 @@ const faceDownTemplate = /** @type {HTMLTemplateElement} */ (document.getElement
 const emptyTemplate = /** @type {HTMLTemplateElement} */ (document.getElementById("emptyCardTemplate"));
 
 function newGame() {
+  // clear previous state
+  localStorage.removeItem("soulSolitaireState");
+
   // setup a new command manager for this game
   CommandManager = createCommandManager();
 
   // recall cards
-  soulDeck.addToDrawPile(piles.enchanter.cards.splice(0));
-  soulDeck.addToDrawPile(piles.left.cards.splice(0));
-  soulDeck.addToDrawPile(piles.middle.cards.splice(0));
-  soulDeck.addToDrawPile(piles.right.cards.splice(0));
+  for (const pileName of Object.keys(piles)) {
+    const cards = piles[pileName].cards.splice(0);
+    soulDeck.addToDrawPile(cards);
+  }
   soulDeck.addToDrawPile(soulDeck.discardPile.splice(0));
 
   // flip all face down and then shuffle
@@ -55,6 +58,9 @@ function newGame() {
 
   // trigger display of cards
   renderCards();
+
+  // Save initial game state
+  saveGameState();
 }
 
 document.getElementById("newGameButton")?.addEventListener("click", () => newGame());
@@ -150,6 +156,51 @@ function sortDiscardPile(a, b) {
   }
 }
 
+// Utility: Save state to localStorage
+function saveGameState() {
+  const state = {
+    piles: Object.fromEntries(
+      Object.entries(piles).map(([name, { cards }]) => [
+        name,
+        cards.map((c) => ({ ...c })),
+      ])
+    ),
+    deck: {
+      drawPile: soulDeck.drawPile.map((c) => ({ ...c })),
+      discardPile: soulDeck.discardPile.map((c) => ({ ...c })),
+    },
+  };
+  localStorage.setItem("soulSolitaireState", JSON.stringify(state));
+}
+
+// Utility: Load state from localStorage
+function loadGameState() {
+  const stateStr = localStorage.getItem("soulSolitaireState");
+  if (!stateStr) return false;
+  try {
+    const state = JSON.parse(stateStr);
+
+    // Restore piles
+    for (const pileName of Object.keys(piles)) {
+      piles[pileName].cards.length = 0;
+      if (state.piles[pileName]) {
+        piles[pileName].cards.push(...state.piles[pileName]);
+      }
+    }
+
+    // Restore deck
+    soulDeck.drawPile.length = 0;
+    soulDeck.drawPile.push(...state.deck.drawPile);
+    soulDeck.discardPile.length = 0;
+    soulDeck.discardPile.push(...state.deck.discardPile);
+
+    renderCards();
+    return true; // Successfully loaded state
+  } catch {
+    return false; // Failed to parse state
+  }
+}
+
 /**
  * @param {string} fromPile
  * @param {string} toPile
@@ -170,6 +221,9 @@ function shiftCards(fromPile, toPile) {
 
   // re-render cards
   renderCards();
+
+  // Save after move
+  saveGameState();
 }
 
 // Find all three displayed card piles and set them up for discarding and shifting
@@ -246,5 +300,9 @@ const createCommandManager = () => {
 };
 
 document.addEventListener("DOMContentLoaded", function () {
-  newGame();
+  // Try to load the game state from localStorage
+  if (!loadGameState()) {
+    // If no state found, start a new game
+    newGame();
+  }
 });
